@@ -71,6 +71,8 @@
 4. 用标签形式,引用注册好的子组件
 
 ## 获取所有的评论数据 显示到页面中
+1. getComments()
+
 
 ## 实现点击加载更多评论的功能
 1. 为 加载更多 按钮绑定 点击事件,在事件中请求下一页数据
@@ -78,3 +80,45 @@
 2. 点击 加载多,让 pageIndex++, 然后重新调用 this.getComments() 方法 来获取最新一页的数据更
 
 3. 为了防止新数据覆盖老数据的情况,使用数组的 concat() 把新数据和老数据拼接起来
+
+## 发表评论
+1. 为文本框做双向数据绑定
+
+2. 为发表按钮 绑定一个事件
+
+3. 校验评论内容是否为空,如果为空,则用 Toast 提示用户内容不允许为空
+
+4. 通过 vue-resource 发送一个请求,把评论内容提交给服务器
+
+5. 发表评论后刷新列表,以查看最新的评论
+
+
+## 改造图片分析 按钮为 路由的链接并显示对应的组件页面
+
+## 绘制 图片列表 组件页面结构 并美化样式
+1. 顶部滑动条制作
+
+2. 制作 图片列表
+### 制作顶部滑动条的坑们:
+1. 需要借助 MUI 中的 tab-top-webview-main.html 
+
+2. 把 mui-fullscreen 删除
+
+3. 滑动条无法正常触发滑动,通过检查官方文档发现，这是 JS 组件,需要被初始化
+ + 导入 mui.js
+ + ` mui( '.mui-scroll-wrapper' ).scroll({
+ deceleration:0.0005
+ }); `
+ 
+ 
+ 4. 遇到报错,使用 `npm i babel-plugin-transform-remove-strict-mode -D`
+ 
+ 5. 在 .babelrc 的 plugins 里面加 "transform-remove-strict-mode"
+ 
+ 6. npm install --save-dev babel-plugin-syntax-dynamic-import
+ 
+ 7.  在 .babelrc 添加 "ignore": [ "./src/lib/mui/js/*.js" ]
+ 
+ 8. 当滑动条调试完成后,tabbar无法正常运行,把每个tabbar按钮的样式中的 mui-tab-item 重新改名 具体看 App.vue 里面的css组件
+ 
+ 

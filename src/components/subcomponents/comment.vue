@@ -2,8 +2,8 @@
     <div class="cmt-container">
         <h3>发表评论</h3>
         <hr>
-        <textarea placeholder="请输入要说的话" maxlength="120"></textarea>
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <textarea placeholder="请输入要说的话" maxlength="120" v-model="msg"></textarea>
+        <mt-button type="primary" size="large" @click="postComment">发表评论</mt-button>
 
         <div class="cmt-list">
             <div class="cmt-item" v-for="(item,i) in comments" :key="item.add_time">
@@ -26,7 +26,8 @@
         data(){
             return{
                 pageIndex:1, // 默认展示的第一页数据
-                comments:[] // 所有的评论数据
+                comments:[], // 所有的评论数据
+                msg:'' // 评论输入的内容
             }
         },
         cerated(){
@@ -36,7 +37,6 @@
             getComments(){ // 获取评论
                 this.$http.get("api/getcomments/" + this.id +"?pageindex" + this.pageIndex).then(result => {
                     if(result.body.status === 0){
-                        // this.comments = result.body.message;
                         this.comments = this.comments.concat(result.body.message); // 使用拼接把评论组合起来
                     }else{
                         Toast('获取失败');
@@ -46,9 +46,29 @@
             getMore(){ // 加载更多
                 this.pageIndex++;
                 this.getComments();
+            },
+            postComment(){
+                // 校验是否为空
+                if(this.msg.trim().length === 0){
+                    return Toast('评论内容不能为空');
+                }
+
+                // 发表评论
+                // 参数1：请求的url地址
+                // 参数2：提交给服务器的数据对象 {content:this.msg}
+                // 参数3：定义提交时候，表单中的数据格式 {emulateJSON:true}
+                this.$http.post("api/postcomment/" + this.$route.params.id,{content:this.msg.trim()}).then(function (result) {
+                    if(result.body.status === 0){
+                        // 1. 拼接出一个评论对象
+                        var cmt = {user_name:'admin',add_time:Date.now(),content:this.msg.trim()};
+                        this.comments.unshift(cmt);
+                        this.msg = '';
+                    }else{
+                        Toast('提交失败');
+                    }
+                })
             }
-        },
-        props:["id"]
+        }
     }
 
 

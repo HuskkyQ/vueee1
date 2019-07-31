@@ -22,6 +22,7 @@ Vue.use(VueResource);
 
 // 设置请求的根路径
 Vue.http.options.root = 'http://www.liulongbin.top:3005/';
+Vue.http.options.emulateJSON = true;
 
 
 // 1.3 导入自己的 router.js 路由模块
