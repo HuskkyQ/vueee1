@@ -29,11 +29,23 @@ Vue.http.options.emulateJSON = true;
 import router from './router.js';
 
 
-import {Header,Swipe, SwipeItem,Button} from 'mint-ui';
+/*import {Header,Swipe, SwipeItem,Button,Lazyload} from 'mint-ui';
 Vue.component(Header.name,Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button);
+Vue.use(Lazyload);*/
+
+import MintUI from 'mint-ui';
+Vue.use(MintUI);
+import 'mint-ui/lib/style.css';
+
+// 安装图片预览插件
+import VuePreview from 'vue-preview';
+Vue.use(VuePreview);
+
+
+
 
 import './lib/mui/css/mui.min.css';
 import './lib/mui/css/icons-extra.css';
