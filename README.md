@@ -157,4 +157,4 @@
 
 3. 打开项目中 package.json 文件,在 dev 脚本中,添加一个 --host 指令,把当前WIFI的IP地址设置为 --host的指令值;
 + 查看电脑所处WIFI的IP: 在终端运行 `ipconfig` ,即可查看无线网的ip地址
-
+zzz
