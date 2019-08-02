@@ -2,7 +2,7 @@
     <div class="goodsinfo-container">
 
         <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-            <div class="ball" v-show="ballFlag"></div>
+            <div class="ball" v-show="ballFlag" ref="ball"></div>
         </transition>
 
 
@@ -23,7 +23,7 @@
                     <p class="price">
                         市场价: <del>{{goodsinfo.market_price}}</del>&nbsp;&nbsp;销售价: <span class="now_price">{{goodsinfo.sell_price}}</span>
                     </p>
-                    <p>购买数量:<numbox></numbox></p>
+                    <p>购买数量:<numbox @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></numbox></p>
                     <p>
                         <mt-button type="primary" size="small">立即购买</mt-button>
                         <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>
@@ -67,6 +67,7 @@
                 lunbotu:[], // 轮播图的数据
                 goodsinfo:{}, // 商品信息数据
                 ballFlag:false,
+                selectedCount:1, // 保存用户选中的商品数量，默认为1
             }
         },
         created(){
@@ -108,12 +109,27 @@
             },
             enter(el,done){
                 el.offsetWidth;
-                el.style.transform = "translate(530px,1570px)";
-                el.style.transition = "all 1s ease";
+                // 小球动画优化思路
+
+                // 获取小球在页面中的位置
+                const ballPosition = this.$refs.ball.getBoundingClientRect();
+                // 获取 徽标 在页面中的位置
+                const badgePosition = document.getElementById("badge").getBoundingClientRect();
+
+                const xDist = badgePosition.left - ballPosition.left;
+                const yDist = badgePosition.top - ballPosition.top;
+
+
+                el.style.transform =  `translate(${xDist}px,${yDist}px)`;
+                el.style.transition = "all 1s cubic-bezier(.4,-0.3,1,.68)";
                 done();
             },
             afterEnter(el){
                 this.ballFlag=!this.ballFlag;
+            },
+            getSelectedCount(count){
+                this.selectedCount = count;
+                console.log('这是' + this.selectedCount);
             }
         },
         components:{
