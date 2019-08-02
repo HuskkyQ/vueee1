@@ -103,6 +103,12 @@
             addToShopCar(){
                 // 添加购物车
                 this.ballFlag = !this.ballFlag;
+                // 拼接出要保存到 store 中的 car数组里的商品信息对象
+                var goodsinfo = {id:this.id,count:this.selectedCount,price:this.goodsinfo.sell_price,select:true};
+
+                // 调用 store 中 的 mutations 来讲商品加入购物车
+                this.$store.commit('addToCar',goodsinfo);
+
             },
             beforeEnter(el){
                 el.style.transform = "translate(0,0)";
